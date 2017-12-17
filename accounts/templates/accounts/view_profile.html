@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ user.profile.last_name }}'s account'{% endblock %}
+
+{% block body %}
+  <ol>
+    <h1>{{ user.profile.first_name }} {{user.profile.last_name }}<h1>
+    <p>Date of birth: {{ user.profile.date_of_birth }}</p>
+    <h2>Bio:
+      <p>{{ user.profile.bio }}</p>
+    </h2>
+    <p>{{ user.profile.avatar }}</p>
+    <p>Hobby: {{ user.profile.hobby }}</p>
+    <p>Country of residence: {{ user.profile.country }}</p>
+    <p>Mail: {{ user.profile.email }}</p>
+  </ol>
+  <input type="submit" class="button-primary" value="Sign In">
+{% endblock %}

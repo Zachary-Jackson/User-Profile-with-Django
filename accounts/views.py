@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -7,6 +8,7 @@ from django.shortcuts import render
 
 
 def sign_in(request):
+    '''This view allows the user to sign into the website.'''
     form = AuthenticationForm()
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -32,6 +34,7 @@ def sign_in(request):
 
 
 def sign_up(request):
+    '''This allows a user to create a new account'''
     form = UserCreationForm()
     if request.method == 'POST':
         form = UserCreationForm(data=request.POST)
@@ -51,6 +54,13 @@ def sign_up(request):
 
 
 def sign_out(request):
+    '''This allows a user to sign out of an account.'''
     logout(request)
     messages.success(request, "You've been signed out. Come back soon!")
     return HttpResponseRedirect(reverse('home'))
+
+
+@login_required
+def profile(request):
+    '''This takes a logged in user to the user's profile page.'''
+    return render(request, 'accounts/view_profile.html')
