@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     '''This is the profile model for a User.'''
-    user = models.OneToOneField(User, unique=True)
+    user = models.OneToOneField(User)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, blank=True)
     email = models.EmailField(blank=True)

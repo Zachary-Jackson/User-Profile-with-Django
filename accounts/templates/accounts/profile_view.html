@@ -14,5 +14,5 @@
     <p>Country of residence: {{ user.profile.country }}</p>
     <p>Mail: {{ user.profile.email }}</p>
   </ol>
-  <input type="submit" class="button-primary" value="Sign In">
+  <a href="{% url 'accounts:profile_edit' %}"><input type="submit" class="button-primary" value="Edit Profile"></a>
 {% endblock %}

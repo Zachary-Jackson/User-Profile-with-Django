@@ -1,10 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
+from . import forms
 
 
 def sign_in(request):
@@ -61,6 +64,24 @@ def sign_out(request):
 
 
 @login_required
-def profile(request):
+def profile_view(request):
     '''This takes a logged in user to the user's profile page.'''
-    return render(request, 'accounts/view_profile.html')
+    return render(request, 'accounts/profile_view.html')
+
+
+@login_required
+def profile_edit(request):
+    '''This takes a logged in user to the user's profile edit page.'''
+    form = forms.ProfileForm()
+    if request.method == 'POST':
+        form = forms.ProfileForm(data=request.POST)
+        if form.is_valid():
+            form.save(commit=False)
+            form.user = User
+            form.save()
+            messages.success(
+                request,
+                "You have edited Your profile!"
+            )
+            return render(request, 'accounts/profile_view.html')
+    return render(request, 'accounts/profile_edit.html', {'form': form})

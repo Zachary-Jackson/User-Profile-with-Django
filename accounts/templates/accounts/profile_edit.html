@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}Profile Editor{% endblock %}
+
+{% block body %}
+<form method="POST" action="{% url 'accounts:profile_edit' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="button-primary" value="Confirm">
+</form>
+{% endblock %}
