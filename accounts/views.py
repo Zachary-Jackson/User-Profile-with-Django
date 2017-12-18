@@ -1,13 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from . import forms
+from . import models
 
 
 def sign_in(request):
@@ -72,16 +73,33 @@ def profile_view(request):
 @login_required
 def profile_edit(request):
     '''This takes a logged in user to the user's profile edit page.'''
-    form = forms.ProfileForm()
-    if request.method == 'POST':
-        form = forms.ProfileForm(data=request.POST)
-        if form.is_valid():
-            form.save(commit=False)
-            form.user = User
-            form.save()
-            messages.success(
-                request,
-                "You have edited Your profile!"
-            )
-            return render(request, 'accounts/profile_view.html')
+    # This checks to see if the user already has a profile.
+    try:
+        profile = models.Profile.objects.get(user=request.user.id)
+    except ObjectDoesNotExist:
+        form = forms.ProfileForm(initial={'user': request.user.id})
+        if request.method == 'POST':
+            form = forms.ProfileForm(data=request.POST)
+            if form.is_valid():
+                new_profile = form.save(commit=False)
+                new_profile.user = request.user
+                new_profile.save()
+                messages.success(
+                    request,
+                    "You have created Your profile!"
+                )
+                return render(request, 'accounts/profile_view.html')
+    else:
+        request.user.profile = profile
+        form = forms.ProfileForm(instance=profile, initial={
+            'email_confirmation': profile.email})
+        if request.method == 'POST':
+            form = forms.ProfileForm(data=request.POST, instance=profile)
+            if form.is_valid():
+                form.save()
+                messages.success(
+                    request,
+                    "You have edited Your profile!"
+                )
+                return render(request, 'accounts/profile_view.html')
     return render(request, 'accounts/profile_edit.html', {'form': form})
