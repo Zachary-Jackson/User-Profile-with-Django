@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static from staticfiles %}
 
 {% block title %}{{ user.profile.last_name }}'s account'{% endblock %}
 
@@ -9,7 +10,10 @@
     <h2>Bio:
       <p>{{ user.profile.bio }}</p>
     </h2>
-    <p>{{ user.profile.avatar }}</p>
+    {% with ''|add:user.profile.avatar.url as avatar_image %}
+    <img src= {{ user.profile.avatar.url }}>
+    <img src= '/accounts/media/images/IMG_20171216_150255702.jpg'>
+    {% endwith %}
     <p>Hobby: {{ user.profile.hobby }}</p>
     <p>Country of residence: {{ user.profile.country }}</p>
     <p>Mail: {{ user.profile.email }}</p>
