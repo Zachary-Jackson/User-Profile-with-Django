@@ -13,7 +13,7 @@ class Profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField(max_length=1000, blank=True)
     avatar = models.ImageField(blank=True,
-                               upload_to='accounts/media/images')
+                               upload_to='images')
     hobby = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True)
 

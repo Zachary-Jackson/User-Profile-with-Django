@@ -83,7 +83,7 @@ class ProfileView(TestCase):
             email='testemail@test.com',
             date_of_birth=datetime.datetime.now().date(),
             bio='I provide safety and security to this applicaion.',
-            # leaving avatar blank
+            avatar='test/test.jpg',
             hobby='Helping people create profiles.',
             country='United States of America'
         )

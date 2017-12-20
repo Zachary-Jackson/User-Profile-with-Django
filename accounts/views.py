@@ -67,7 +67,10 @@ def sign_out(request):
 @login_required
 def profile_view(request):
     '''This takes a logged in user to the user's profile page.'''
-    return render(request, 'accounts/profile_view.html')
+    # This gets the User's profile.avatar.url and turns it into a relative path
+    # to send to the template as avatar_url
+    return render(request,
+                  'accounts/profile_view.html')
 
 
 @login_required
