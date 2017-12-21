@@ -72,9 +72,15 @@ def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'You have updated your password.')
-            return HttpResponseRedirect(reverse('home'))
+            # This checks to see if the old and new passwords are the same.
+            old = form.cleaned_data['old_password']
+            new = form.cleaned_data['new_password1']
+            if old == new:
+                messages.error(request, 'You can not reuse your old password.')
+            else:
+                form.save()
+                messages.success(request, 'You have updated your password.')
+                return HttpResponseRedirect(reverse('home'))
     form = PasswordChangeForm(request.user)
     return render(request, 'accounts/change_password.html',
                   {'form': form})
