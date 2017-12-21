@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from .models import Profile
+from .forms import ProfileForm
 
 
 class ProfileModelTest(TestCase):
@@ -33,6 +34,59 @@ class ProfileModelTest(TestCase):
         self.assertEqual(profile.first_name, 'first')
         self.assertEqual(profile.country, 'United States of America')
         self.assertEqual(profile.date_of_birth, datetime.datetime.now().date())
+
+
+class ProfileFormTest(TestCase):
+    '''This tests to see if ProfileForm works.'''
+    def test_profile_form_good(self):
+        '''Tests a good form.'''
+        form_data = {
+            'first_name': 'first',
+            'last_name': 'last',
+            'email': 'testemail@test.com',
+            'email_confirmation': 'testemail@test.com',
+            'date_of_birth': datetime.datetime.now().date(),
+            'bio': 'This needs to be over 10 characters',
+            'avatar': 'test/test.jpg',
+            'hobby': 'Helping people create profiles.',
+            'country': 'Moved to Canada as opposed to US above.'
+        }
+        form = ProfileForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    # This test is to be added in the future.
+    def profile_form_bio_short(self):
+        '''Tests a form with a varing bio characteristics.'''
+        # bio with under ten characters, but not blank should be bad.
+        form_data = {
+            'first_name': 'first',
+            'last_name': 'last',
+            'email': 'testemail@test.com',
+            'email_confirmation': 'testemail@test.com',
+            'date_of_birth': datetime.datetime.now().date(),
+            'bio': '+10char?',
+            'avatar': 'test/test.jpg',
+            'hobby': 'Helping people create profiles.',
+            'country': 'Moved to Canada as opposed to US above.'
+        }
+        form = ProfileForm(data=form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_profile_form_bio_blank(self):
+        # bio that is left blank should be good.
+        form_data = {
+            'first_name': 'first',
+            'last_name': 'last',
+            'email': 'testemail@test.com',
+            'email_confirmation': 'testemail@test.com',
+            'date_of_birth': datetime.datetime.now().date(),
+            'bio': '',
+            'avatar': 'test/test.jpg',
+            'hobby': 'Helping people create profiles.',
+            'country': 'Moved to Canada as opposed to US above.'
+        }
+        form = ProfileForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
 
 class SignUpView(TestCase):

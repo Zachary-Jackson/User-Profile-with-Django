@@ -1,7 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import (authenticate, login, logout,
+                                 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (AuthenticationForm, UserCreationForm,
+                                       PasswordChangeForm)
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -62,6 +64,20 @@ def sign_out(request):
     logout(request)
     messages.success(request, "You've been signed out. Come back soon!")
     return HttpResponseRedirect(reverse('home'))
+
+
+@login_required
+def change_password(request):
+    '''This allows the user to change passwords.'''
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'You have updated your password.')
+            return HttpResponseRedirect(reverse('home'))
+    form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html',
+                  {'form': form})
 
 
 @login_required

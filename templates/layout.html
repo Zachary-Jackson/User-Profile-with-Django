@@ -63,6 +63,7 @@
                         {% else %}
                             <!-- view profile link here? -->
                             <!-- edit profile link here? -->
+                            <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
                             <li><a href="{% url 'accounts:sign_out' %}">Sign Out</a></li>
                         {% endif %}
                     </ul>

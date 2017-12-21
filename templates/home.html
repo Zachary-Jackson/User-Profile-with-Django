@@ -8,8 +8,16 @@
           {% if user.is_authenticated %}Welcome {{ user|title }}! {% endif %}
           {% if not user.is_authenticated%}Welcome! {% endif %}
         </h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ad amet assumenda beatae blanditiis, deserunt doloremque ea earum excepturi id, impedit ipsam magnam nulla obcaecati, quidem quis soluta tenetur vitae?</p>
-        <p>{{ user.profile.bio }}</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ad amet assumenda beatae blanditiis, deserunt doloremque ea earum excepturi id, impedit ipsam magnam nulla obcaecati, quidem quis soluta tenetur vitae?</p>
+        {% if not user.is_authenticated %}
+          <p>Welcome to the User Profile page. Here you can create your very own profile page
+            and share it with anyone you want. You can add an avatar, bio, country and more!
+          </p>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <p>Feel free to edit your page if you desire and
+          share it with anyone you want to.
+        </p>
+        <p>Don't forget to change your avatar everynow and again.</p>
+        {% endif %}
     </div>
 {% endblock %}
