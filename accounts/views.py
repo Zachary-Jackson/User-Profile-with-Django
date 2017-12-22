@@ -88,8 +88,6 @@ def change_password(request):
 @login_required
 def profile_view(request):
     '''This takes a logged in user to the user's profile page.'''
-    # This gets the User's profile.avatar.url and turns it into a relative path
-    # to send to the template as avatar_url
     return render(request,
                   'accounts/profile_view.html')
 
@@ -101,6 +99,7 @@ def profile_edit(request):
     try:
         profile = models.Profile.objects.get(user=request.user.id)
     except ObjectDoesNotExist:
+        # This creates a ProfileForm for the user.
         form = forms.ProfileForm(initial={'user': request.user.id})
         if request.method == 'POST':
             form = forms.ProfileForm(request.POST, request.FILES)
@@ -114,11 +113,13 @@ def profile_edit(request):
                 )
                 return render(request, 'accounts/profile_view.html')
     else:
+        # This takes the user's profile and sends it into the form.
         request.user.profile = profile
         form = forms.ProfileForm(instance=profile, initial={
             'email_confirmation': profile.email})
         if request.method == 'POST':
-            form = forms.ProfileForm(request.POST, request.FILES, instance=profile)
+            form = forms.ProfileForm(request.POST, request.FILES,
+                                     instance=profile)
             if form.is_valid():
                 form.save()
                 messages.success(

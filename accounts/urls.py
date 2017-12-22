@@ -1,4 +1,3 @@
-from django.contrib.auth.views import password_change
 from django.conf.urls import url
 
 from . import views

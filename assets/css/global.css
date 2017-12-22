@@ -2107,6 +2107,19 @@ input[type="email"].circle--input--h6, input[type="number"].circle--input--h6, i
 }
 
 .smaller-image {
-  width: 35rem;
+  max-width: 45%;
   height: auto;
+  border: 1.5rem solid #537d7b;
+  float: right;
+  margin: auto;
+  padding: 1rem;
+}
+
+.profile {
+  text-align: left;
+  margin-left: 3rem;
+}
+
+.text-indent {
+  text-indent: 3%
 }

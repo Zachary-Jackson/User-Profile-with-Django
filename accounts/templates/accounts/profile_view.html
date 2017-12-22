@@ -3,18 +3,44 @@
 {% block title %}{{ user.profile.last_name }}'s account'{% endblock %}
 
 {% block body %}
-  <ol>
-    <h1>{{ user.profile.first_name }} {{user.profile.last_name }}<h1>
-    <p>Date of birth: {{ user.profile.date_of_birth }}</p>
-    <h2>Bio:
-      <p>{{ user.profile.bio }}</p>
-    </h2>
-    {% if user.profile.avatar.url %}
-      <img class="smaller-image" src= {{ user.profile.avatar.url }}>
+
+{% if user.profile.avatar.url %}
+  <img class="smaller-image" src= {{ user.profile.avatar.url }}>
+{% endif %}
+
+{% if not user.profile.first_name %}
+  <h1>First and last name</h1>
+{% endif %}
+<h1>{{ user.profile.first_name }} {{user.profile.last_name }}'s profile<h1>
+
+  <ol class="profile">
+    {% if user.profile.date_of_birth %}
+      <h2>Date of birth:
+        <p class="text-indent">{{ user.profile.date_of_birth }}</p>
+      </h2>
     {% endif %}
-    <p>Hobby: {{ user.profile.hobby }}</p>
-    <p>Country of residence: {{ user.profile.country }}</p>
-    <p>Mail: {{ user.profile.email }}</p>
+    <h2>Bio:
+      <p class="text-indent">{{ user.profile.bio }}</p>
+      {% if not user.profile.bio %}
+        <p>This is where your bio would go. More fields will appear as you add
+        them.</p>
+      {% endif %}
+    </h2>
+    {% if user.profile.hobby %}
+      <h2>Hobby:
+        <p class="text-indent">{{ user.profile.hobby }}</p>
+      </h2>
+    {% endif %}
+    {% if user.profile.country %}
+      <h2>Country of residence:
+        <p class="text-indent">{{ user.profile.country }}</p>
+      </h2>
+    {% endif %}
+    {% if user.profile.email %}
+      <h2>Mail:
+        <p class="text-indent">{{ user.profile.email }}</p>
+      </h2>
+    {% endif %}
+    <a href="{% url 'accounts:profile_edit' %}"><input type="submit" class="button-primary" value="Edit Profile"></a>
   </ol>
-  <a href="{% url 'accounts:profile_edit' %}"><input type="submit" class="button-primary" value="Edit Profile"></a>
 {% endblock %}
