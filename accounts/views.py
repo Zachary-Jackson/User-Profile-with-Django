@@ -103,7 +103,7 @@ def profile_edit(request):
     except ObjectDoesNotExist:
         form = forms.ProfileForm(initial={'user': request.user.id})
         if request.method == 'POST':
-            form = forms.ProfileForm(data=request.POST)
+            form = forms.ProfileForm(request.POST, request.FILES)
             if form.is_valid():
                 new_profile = form.save(commit=False)
                 new_profile.user = request.user
@@ -118,7 +118,7 @@ def profile_edit(request):
         form = forms.ProfileForm(instance=profile, initial={
             'email_confirmation': profile.email})
         if request.method == 'POST':
-            form = forms.ProfileForm(data=request.POST, instance=profile)
+            form = forms.ProfileForm(request.POST, request.FILES, instance=profile)
             if form.is_valid():
                 form.save()
                 messages.success(

@@ -22,10 +22,11 @@ class ProfileForm(forms.ModelForm):
 
     def clean_bio(self):
         '''This checks to see if the bio is at least 10 characters long.'''
-        # I can find bio's contents with self.cleaned_data['bio']
-        # This clean_bio function causes bio to be null
-        import pdb; pdb.set_trace()
-        pass
+        bio = self.cleaned_data['bio']
+        if len(bio) < 10:
+            raise forms.ValidationError(
+                "The bio must be at least ten characters")
+        return bio
 
     def clean_email_confirmation(self):
         '''This checks to see if email and email_confirmation are the same.'''
@@ -33,3 +34,4 @@ class ProfileForm(forms.ModelForm):
         email_confirmation = self.cleaned_data['email_confirmation']
         if email != email_confirmation:
             raise forms.ValidationError("Emails must match")
+        return email_confirmation

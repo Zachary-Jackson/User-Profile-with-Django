@@ -3,7 +3,7 @@
 {% block title %}Profile Editor{% endblock %}
 
 {% block body %}
-<form method="POST" action="{% url 'accounts:profile_edit' %}">
+<form method="POST" action="{% url 'accounts:profile_edit' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" class="button-primary" value="Confirm">
