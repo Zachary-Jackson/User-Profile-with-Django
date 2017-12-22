@@ -11,9 +11,8 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=50, blank=True)
     email = models.EmailField(blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    bio = models.TextField(max_length=1000, blank=True)
-    avatar = models.ImageField(blank=True,
-                               upload_to='images')
+    bio = models.TextField(max_length=1000)
+    avatar = models.ImageField(upload_to='images')
     hobby = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True)
 
